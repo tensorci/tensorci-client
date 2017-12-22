@@ -29,10 +29,7 @@ class AbstractApi(object):
     all_headers = self.base_headers
 
     if self.auth_header_name and self.auth_header_value is not None:
-      if type(self.auth_header_value).__name__ in ('function', 'instancemethod'):
-        all_headers[self.auth_header_name] = self.auth_header_value()
-      else:
-        all_headers[self.auth_header_name] = self.auth_header_value
+      all_headers[self.auth_header_name] = self.auth_header_value
 
     if headers:
       for k, v in headers.items():
