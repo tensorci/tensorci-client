@@ -1,5 +1,4 @@
 import requests
-from ex import *
 
 
 class AbstractApi(object):
@@ -48,24 +47,4 @@ class AbstractApi(object):
       args['json'] = payload or {}
 
     # Make request
-    try:
-      response = request(self.base_url + route, **args)
-    except BaseException as e:
-      raise RequestException('Unknown Error while making request: {}'.format(e))
-
-    # Return the JSON response
-    return self.handle_response(response)
-
-  @staticmethod
-  def handle_response(response):
-    try:
-      data = response.json() or {}
-    except:
-      data = {}
-
-    if response.status_code in (200, 201):
-      return data
-    else:
-      raise ApiException(status=response.status_code,
-                         code=data.get('code'),
-                         error=data.get('error'))
+    return request(self.base_url + route, **args)
