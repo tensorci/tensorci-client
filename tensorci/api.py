@@ -51,7 +51,7 @@ class AbstractApi(object):
     try:
       response = request(self.base_url + route, **args)
     except BaseException as e:
-      raise RequestError('Unknown Error while making request: {}'.format(e))
+      raise RequestException('Unknown Error while making request: {}'.format(e))
 
     # Return the JSON response
     return self.handle_response(response)
