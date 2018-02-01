@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='tensorci_client',
+setup(name='tensorci-client',
       version='0.0.5',
       description='TensorCI API Client',
       url='https://github.com/tensorci/tensorci-client',
