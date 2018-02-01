@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='tensorci_client',
-      version='0.0.3',
+      version='0.0.4',
       description='TensorCI API Client',
       url='https://github.com/tensorci/tensorci-client',
       author='Ben Whittle',
