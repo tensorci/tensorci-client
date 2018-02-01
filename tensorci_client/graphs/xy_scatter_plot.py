@@ -29,8 +29,9 @@ class XYScatterPlot(object):
     # Set up our authed API instance
     self.api = self.setup_api()
 
-    # Upsert this graph and get the uid
-    self.upsert_graph()
+    if self.api:
+      # Upsert this graph and get the uid
+      self.upsert_graph()
 
   def upsert_graph(self):
     payload = {

@@ -11,15 +11,15 @@ class DataSeries(object):
     self.color = color
 
   def add_data_point(self, **kwargs):
+    if not redis or not self.graph_uid:
+      return
+
     payload = kwargs
     payload['graph_uid'] = self.graph_uid
     payload['series'] = self.name
     payload['color'] = self.color
 
-    if not redis:
-      return
-
     try:
       redis.rpush(graph_update_queue, json.dumps(payload))
     except BaseException as e:
-      print('Error pushing to redis event queue: {}'.format(e))
+      print('Error pushing to redis graph event queue: {}'.format(e))
