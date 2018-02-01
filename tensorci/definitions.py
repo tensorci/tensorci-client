@@ -1,1 +1,0 @@
-auth_header_name = 'TensorCI-Api-Secret'
