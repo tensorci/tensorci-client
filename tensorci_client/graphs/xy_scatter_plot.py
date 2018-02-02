@@ -52,11 +52,13 @@ class XYScatterPlot(object):
 
   def setup_api(self):
     train_cluster_secret = os.environ.get('TENSORCI_TRAIN_SECRET')
+    core_api_token = os.environ.get('CORE_API_TOKEN')
 
-    if not train_cluster_secret:
+    if not train_cluster_secret or not core_api_token:
       return None
 
     return AbstractApi(base_url=(os.environ.get('CORE_URL') or 'https://api.tensorci.com/api'),
+                       base_headers={'Core-Api-Token': core_api_token},
                        auth_header_name=train_cluster_header,
                        auth_header_value=train_cluster_secret)
 
