@@ -1,8 +1,8 @@
 import os
 from api import AbstractApi
 from definitions import auth_header_name
-from slugify import slugify
 from ex import *
+from tensorci_client.utils.slug import to_slug
 
 
 class TensorCI:
@@ -15,8 +15,8 @@ class TensorCI:
     self.project = project or os.environ.get('TENSORCI_PROJECT')
 
     # Create the API url from the project specified
-    team_slug = slugify(self.team or '', separator='-', to_lower=True)
-    project_slug = slugify(self.project or '', separator='-', to_lower=True)
+    team_slug = to_slug(self.team or '')
+    project_slug = to_slug(self.project or '')
     api_url = 'https://{}-{}.tensorci.com/api'.format(team_slug, project_slug)
 
     # Set up our authed API instance
