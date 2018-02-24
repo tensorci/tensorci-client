@@ -11,6 +11,7 @@ setup(name='tensorci-client',
       install_requires=[
         'requests',
         'awesome-slugify',
-        'redis'
+        'redis',
+        'restful_redis'
       ],
       zip_safe=False)
