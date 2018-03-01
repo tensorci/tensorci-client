@@ -14,7 +14,7 @@ class TensorCI(object):
 
     Using kwargs for configuration:
 
-      from tensorci_client.tensorci import TensorCI
+      from tensorci_client import TensorCI
 
       tensorci_client = TensorCI(client_id=<PROJECT_CLIENT_ID>,
                                  client_secret=<PROJECT_CLIENT_SECRET>,
@@ -28,7 +28,7 @@ class TensorCI(object):
       export TENSORCI_TEAM="<TEAM_NAME>"
       export TENSORCI_PROJECT="<PROJECT_NAME>"
 
-      from tensorci_client.tensorci import TensorCI
+      from tensorci_client import TensorCI
 
       tensorci_client = TensorCI()
   """
@@ -57,9 +57,8 @@ class TensorCI(object):
     # Validate configuration attrs above
     self.validate_config()
 
-    domain = self.construct_domain()
-    port = envs.TENSORCI_SOCKET_PORT or definitions.default_socket_port
-    self.socket = new_socket(domain=domain, port=port)
+    domain, port, headers = self.socket_connection_params()
+    self.socket = new_socket(domain=domain, port=port, headers=headers)
 
   def validate_config(self):
     configs = (
@@ -87,6 +86,16 @@ class TensorCI(object):
 
     return '.'.join((subdomain, host_domain))
 
+  def socket_connection_params(self):
+    domain = self.construct_domain()
+    port = envs.TENSORCI_SOCKET_PORT or definitions.default_socket_port
+    headers = {
+      definitions.socket_client_id_header: self.client_id,
+      definitions.socket_client_secret_header: self.client_secret
+    }
+
+    return domain, port, headers
+
   def request(self, handler, **kwargs):
     data = {
       'handler': handler,
@@ -94,17 +103,20 @@ class TensorCI(object):
     }
 
     try:
-      # Send request data through the socket and wait for immediate response.
+      # Send request data through the socket and wait for response.
       self.socket.send(json.dumps(data))
       resp = self.socket.recv()
     except BaseException as e:
-      raise SocketRequestException(e.message or e)
+      raise SocketRequestException(e)
 
     try:
       # Response must be JSON parse-able
       resp = json.loads(resp)
     except:
       raise ResponseParseException(resp=resp)
+
+    if resp.get('ok') is not True:
+      raise ResponseError(resp)
 
     return resp
 

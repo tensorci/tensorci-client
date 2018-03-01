@@ -1,25 +1,50 @@
-class MissingCredentialsException(BaseException):
+class TensorCIException(BaseException):
+
+  def __init__(self, message=None):
+    self.message = message
+
+
+class MissingCredentialsException(TensorCIException):
 
   def __init__(self, missing_creds=None):
     self.missing_creds = missing_creds or []
-    self.message = None
+    message = None
 
     if self.missing_creds:
-      self.message = 'Missing TensorCI credentials:\n'
+      message = 'Missing TensorCI credentials:\n'
       missing_cred_temp = '{} -- either set {} during instantiation of TensorCI or set the {} environment variable.\n'
 
       for c in self.missing_creds:
         attr, backup = c
-        self.message += missing_cred_temp.format(attr, attr, backup)
+        message += missing_cred_temp.format(attr, attr, backup)
+
+    super(MissingCredentialsException, self).__init__(message)
 
 
-class SocketRequestException(BaseException):
+class SocketRequestException(TensorCIException):
 
   def __init__(self, message='Unknown Exception Occurred'):
-    self.message = message
+    super(SocketRequestException, self).__init__(message)
 
 
-class ResponseParseException(BaseException):
+class ResponseParseException(TensorCIException):
 
   def __init__(self, resp=None):
-    self.message = 'Error parsing JSON response: {}'.format(resp)
+    message = 'Error parsing JSON response: {}'.format(resp)
+    super(ResponseParseException, self).__init__(message)
+
+
+class ResponseError(TensorCIException):
+
+  def __init__(self, resp=None):
+    status = resp.get('status')
+    err = resp.get('error')
+    message = 'Request returned error'
+
+    if status:
+      message += ' (status={})'.format(status)
+
+    if err:
+      message += ': {}'.format(err)
+
+    super(ResponseError, self).__init__(message)

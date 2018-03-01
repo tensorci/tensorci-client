@@ -3,7 +3,7 @@ from tensorci_client.utils.envs import envs
 from websocket import WebSocket
 
 
-def new_socket(domain=None, port=default_socket_port, **kwargs):
+def new_socket(domain=None, port=default_socket_port, headers={}, **kwargs):
   if envs.TENSORCI_SOCKET_URL:
     url = envs.TENSORCI_SOCKET_URL
   else:
@@ -16,7 +16,13 @@ def new_socket(domain=None, port=default_socket_port, **kwargs):
 
     url = protocol + domain + ':' + port
 
+  formatted_headers = ['{}: {}'.format(k, v) for k, v in headers.items()]
+  connect_kwargs = {}
+
+  if formatted_headers:
+    connect_kwargs['header'] = formatted_headers
+
   ws = WebSocket(**kwargs)
-  ws.connect(url)
+  ws.connect(url, **connect_kwargs)
 
   return ws
