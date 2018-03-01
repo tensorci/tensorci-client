@@ -8,12 +8,11 @@ class XYScatterPlot(object):
 
   def __init__(self, title=None, x_axis=None, y_axis=None):
     """
-    Usage:
+    Basic Usage:
 
-    plot = XYScatterPlot(
-            title='Loss vs. Iterations',
-            x_axis='Iterations',
-            y_axis='Loss')
+    plot = XYScatterPlot(title='Loss vs. Iterations',
+                         x_axis='Iterations',
+                         y_axis='Loss')
     """
     # Set graph properties
     self.title = title
