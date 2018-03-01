@@ -8,4 +8,4 @@ graph_update_queue = 'graph-update-queue'
 
 # Connection Info
 host_domain = 'tensorci.com'
-default_socket_port = 5000
+default_socket_port = 80

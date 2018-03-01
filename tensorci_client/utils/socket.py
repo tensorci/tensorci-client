@@ -7,10 +7,11 @@ def new_socket(domain=None, port=default_socket_port, headers={}, **kwargs):
   if envs.TENSORCI_SOCKET_URL:
     url = envs.TENSORCI_SOCKET_URL
   else:
-    use_secure_sockets = kwargs.get('SECURE_SOCKETS') is True or domain != 'localhost'
+    use_secure_sockets = kwargs.get('secure_sockets') is True or domain != 'localhost'
 
     if use_secure_sockets:
       protocol = 'wss://'
+      port = 443
     else:
       protocol = 'ws://'
 
