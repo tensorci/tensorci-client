@@ -11,3 +11,15 @@ class MissingCredentialsException(BaseException):
       for c in self.missing_creds:
         attr, backup = c
         self.message += missing_cred_temp.format(attr, attr, backup)
+
+
+class SocketRequestException(BaseException):
+
+  def __init__(self, message='Unknown Exception Occurred'):
+    self.message = message
+
+
+class ResponseParseException(BaseException):
+
+  def __init__(self, resp=None):
+    self.message = 'Error parsing JSON response: {}'.format(resp)
