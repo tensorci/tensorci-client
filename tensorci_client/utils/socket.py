@@ -15,7 +15,7 @@ def new_socket(domain=None, port=default_socket_port, headers={}, **kwargs):
     else:
       protocol = 'ws://'
 
-    url = protocol + domain + ':' + port
+    url = '{}{}:{}'.format(protocol, domain, port)
 
   formatted_headers = ['{}: {}'.format(k, v) for k, v in headers.items()]
   connect_kwargs = {}
