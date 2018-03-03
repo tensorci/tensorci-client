@@ -1,7 +1,7 @@
 import os
 from tensorci_client.api import AbstractApi
 from tensorci_client.definitions import train_cluster_header
-from data_series import DataSeries
+from .data_series import DataSeries
 
 
 class XYScatterPlot(object):

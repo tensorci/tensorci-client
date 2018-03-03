@@ -1,1 +1,1 @@
-from tensorci import TensorCI
+from .tensorci import TensorCI
