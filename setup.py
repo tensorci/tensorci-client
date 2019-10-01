@@ -9,7 +9,7 @@ setup(name='tensorci-client',
       license='MIT',
       packages=find_packages(),
       install_requires=[
-        'requests==2.18.4',
+        'requests==2.20.0',
         'awesome-slugify==1.6.5',
         'redis==2.10.6',
         'websocket-client==0.47.0'
